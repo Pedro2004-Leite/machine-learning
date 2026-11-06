@@ -1,0 +1,10 @@
+# Development only (notebooks, plots, ACF/PACF). Not needed by the grader.
+# Includes the pinned runtime dependencies so they cannot drift.
+-r requirements.txt
+jupyterlab>=4,<5
+ipykernel>=6
+matplotlib>=3.8,<4
+statsmodels>=0.14,<1
+seaborn>=0.13,<1
+# Optional experiments on GPU only. NOT a grader dependency: never import torch from best_model/.
+torch>=2.15,<3

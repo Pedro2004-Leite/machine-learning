@@ -1,0 +1,26 @@
+# Virtual environment and machine-specific shell config (.envrc has an absolute path)
+.venv/
+.envrc
+
+# Python caches and notebook autosaves
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Build artifacts: the submission ZIPs are regenerated from the folders
+*.zip
+
+# Editor, OS and agent local files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+.claude/
+.lavish/
+
+# Scratch files
+*.log
+*.tmp
