@@ -1,12 +1,14 @@
 """Our own submission check for Part II (the supplied validator is truncated).
 
 Usage: python check_submission.py TASK SUBMISSION_DIR RELEASED_DATA [--allow-missing-declarations]
-  TASK is 1 (HAB, labels {0,1}) or 2 (PN, labels {0,1,2,3}).
+  TASK is 1 (HAB: predict returns the probability of class 1, a float in [0, 1],
+  as required by the updated assignment of 12 Nov 2026) or 2 (PN, labels {0,1,2,3}).
 
 Does what validate_submission_2.py does (structure, forbidden constructs, import,
 load_model) and then what it forgot: calls predict on a few released rows and
-checks shape, finiteness, label set, no in-place modification, and that it works
-when Python is started from another directory.
+checks shape, finiteness, the output range (task 1) or label set (task 2), no
+in-place modification, and that it works when Python is started from another
+directory.
 """
 
 import argparse
@@ -99,17 +101,28 @@ def check(task, submission_dir, data_path, require_declarations=True, n_rows=20)
                 pred = np.asarray(module.predict(model, day), dtype=float)
                 if pred.shape != (1,) or not np.isfinite(pred).all():
                     raise ValueError(f"row {i}: predict must return one finite value, got {pred!r}")
-                if int(pred[0]) != pred[0] or int(pred[0]) not in LABELS[task]:
+                if task == 1:
+                    # task 1 is scored by AUC: predict must return P(HAB = 1), not a class label
+                    if not 0.0 <= pred[0] <= 1.0:
+                        raise ValueError(f"row {i}: probability {pred[0]} is outside [0, 1]")
+                elif int(pred[0]) != pred[0] or int(pred[0]) not in LABELS[task]:
                     raise ValueError(f"row {i}: prediction {pred[0]} not in {sorted(LABELS[task])}")
                 if not day.equals(before):
                     raise ValueError(f"row {i}: predict modified the input DataFrame")
-                checks.append(int(pred[0]))
+                checks.append(float(pred[0]))
         finally:
             os.chdir(start_cwd)
-    counts = {int(k): checks.count(k) for k in sorted(set(checks))}
-    return {"status": "PASS", "task": task, "group_id": submission_dir.name,
-            "rows_checked": len(picks), "predicted_label_counts": counts,
-            "rows_with_missing_values_checked": len([i for i in picks if i in set(nan_rows)])}
+    result = {"status": "PASS", "task": task, "group_id": submission_dir.name,
+              "rows_checked": len(picks),
+              "rows_with_missing_values_checked": len([i for i in picks if i in set(nan_rows)])}
+    if task == 1:
+        result["predicted_probability"] = {"min": round(min(checks), 4), "max": round(max(checks), 4),
+                                           "distinct_values": len(set(checks))}
+        if len(set(checks)) == 1:
+            result["warning"] = "predict returned the same value for every row, so the AUC would be 0.5"
+    else:
+        result["predicted_label_counts"] = {int(k): checks.count(k) for k in sorted(set(checks))}
+    return result
 
 
 def main():

@@ -1,0 +1,76 @@
+{
+  "protocolo": "leave-one-year-out em 2013-2019, so linhas completas (476 linhas, 62 eventos); 2020 = holdout (87 linhas, 21 eventos), treino 2013-2019",
+  "anos_com_HAB": [
+    2013,
+    2015,
+    2016,
+    2018,
+    2019
+  ],
+  "LOYO_2013_2019": {
+    "LR": {
+      "por_ano": [
+        0.661,
+        0.773,
+        0.86,
+        0.903,
+        0.786
+      ],
+      "media": 0.797,
+      "desvio": 0.083
+    },
+    "ET": {
+      "por_ano": [
+        0.721,
+        0.78,
+        0.817,
+        0.914,
+        0.792
+      ],
+      "media": 0.805,
+      "desvio": 0.063
+    },
+    "E_prob": {
+      "por_ano": [
+        0.68,
+        0.773,
+        0.852,
+        0.911,
+        0.799
+      ],
+      "media": 0.803,
+      "desvio": 0.077
+    },
+    "E_pct_batch": {
+      "por_ano": [
+        0.688,
+        0.817,
+        0.854,
+        0.916,
+        0.803
+      ],
+      "media": 0.816,
+      "desvio": 0.075
+    }
+  },
+  "holdout_2020": {
+    "LR": 0.864,
+    "ET": 0.833,
+    "E_prob": 0.86,
+    "E_pct_batch": 0.86
+  },
+  "notebook_antigo_02_train": {
+    "Extra Trees (melhor de 25)": 0.805,
+    "Logistic Regression (grelha de 56)": 0.797,
+    "Hist Gradient Boosting": 0.79,
+    "Gradient Boosting": 0.79,
+    "Random Forest": 0.777
+  },
+  "modelos": {
+    "LR": "liblinear, L2, C=3, class_weight=balanced; z-score no treino; harmonicos 1 e 2 de YDOY/XDOY, SST, UI, log CHL, log incerteza, cluster one-hot",
+    "ET": "300 arvores, min_samples_leaf=3, max_features=sqrt, sem class_weight, random_state=0; SST, UI, YDOY, XDOY, spatial_cluster (inteiro), CHL, CHL_uncertainty",
+    "E_prob": "media simples das probabilidades de LR e ET",
+    "E_pct_batch": "media de ranks DENTRO do fold de validacao (nao implementavel no predict de uma linha, so referencia)"
+  },
+  "tolerancia_regressao": 0.01
+}

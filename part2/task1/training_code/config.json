@@ -1,0 +1,45 @@
+{
+  "selecao": "nested leave-one-year-out; fam\u00edlia e C escolhidos com o leave-one-year-out interior nos 7 anos de 2013-2019",
+  "modelo_final": "Logistic Regression",
+  "candidato": "Logistic Regression, C=100",
+  "nested_escolheu": {
+    "C": 100
+  },
+  "params": {
+    "C": 5.0
+  },
+  "spec": {
+    "season": [
+      "cos1",
+      "sin1",
+      "cos2",
+      "sin2"
+    ],
+    "SST": true,
+    "UI": true,
+    "CHL": "log",
+    "unc": "raw",
+    "cluster": "onehot",
+    "year": false,
+    "chl_flag": false,
+    "zscore": true
+  },
+  "melhor_por_familia": {
+    "Extra Trees": {
+      "candidato": "Extra Trees, leaf=5, features=sqrt, weights=none",
+      "params": {
+        "min_samples_leaf": 5,
+        "max_features": "sqrt",
+        "class_weight": null,
+        "n_estimators": 1000,
+        "cluster": "number"
+      }
+    },
+    "Logistic Regression": {
+      "candidato": "Logistic Regression, C=100",
+      "params": {
+        "C": 100
+      }
+    }
+  }
+}
