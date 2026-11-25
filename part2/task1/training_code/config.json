@@ -1,7 +1,7 @@
 {
   "selecao": "nested leave-one-year-out; fam\u00edlia e C escolhidos com o leave-one-year-out interior nos 7 anos de 2013-2019",
   "modelo_final": "Logistic Regression",
-  "candidato": "Logistic Regression, C=100",
+  "candidato": "Logistic Regression, C=5",
   "nested_escolheu": {
     "C": 100
   },
